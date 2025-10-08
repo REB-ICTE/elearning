@@ -87,13 +87,13 @@ jq -c '.plugins[]' "../$CONFIG_FILE" | while read -r plugin; do
   echo "  -> Installing plugin: $PLUGIN_NAME"
   echo "     - Repository: $PLUGIN_REPO"
   echo "     - Version: $PLUGIN_VERSION"
-  echo "     - Destination: $PLUGIN_DEST"
+  echo "     - Destination: public/$PLUGIN_DEST"
 
   # Create parent directory if it doesn't exist (e.g., 'mod' or 'theme')
-  mkdir -p "$(dirname "$PLUGIN_DEST")"
+  mkdir -p "$(dirname "public/$PLUGIN_DEST")"
 
   # Clone the specific plugin branch/tag (with submodules)
-  git clone --depth 1 --branch "$PLUGIN_VERSION" --recursive "$PLUGIN_REPO" "$PLUGIN_DEST"
+  git clone --depth 1 --branch "$PLUGIN_VERSION" --recursive "$PLUGIN_REPO" "public/$PLUGIN_DEST"
 
   echo "     - Plugin '$PLUGIN_NAME' installed."
 done
