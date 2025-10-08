@@ -1,0 +1,32 @@
+[mysqld]
+# Character Set and Collation
+character-set-server = utf8mb4
+collation-server = utf8mb4_unicode_ci
+
+# InnoDB Settings (optimized for Moodle)
+innodb_file_per_table = 1
+innodb_file_format = Barracuda
+innodb_large_prefix = 1
+
+# Performance tuning
+max_allowed_packet = 256M
+innodb_buffer_pool_size = 512M
+innodb_log_file_size = 128M
+
+# Connection settings
+max_connections = 200
+wait_timeout = 600
+interactive_timeout = 600
+
+# Query cache (disabled in MariaDB 10.4+)
+# query_cache_size = 0
+# query_cache_type = 0
+
+# Logging
+log_error = /var/log/mysql/error.log
+slow_query_log = 1
+slow_query_log_file = /var/log/mysql/slow-query.log
+long_query_time = 2
+
+[client]
+default-character-set = utf8mb4
