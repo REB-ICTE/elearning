@@ -1,0 +1,15 @@
+{
+  "moodle": {
+    "repository": "https://github.com/moodle/moodle.git",
+    "version": "MOODLE_501_STABLE"
+  },
+  "plugins": [
+    {
+      "name": "mod_hvp",
+      "repository": "https://github.com/h5p/moodle-mod_hvp.git",
+      "version": "stable",
+      "destination": "mod/hvp"
+    }
+  ],
+  "destination_folder": "moodle_app"
+}
