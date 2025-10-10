@@ -4,6 +4,7 @@ FROM php:8.2-fpm
 RUN apt-get update && apt-get install -y \
     git \
     curl \
+    jq \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
@@ -52,6 +53,13 @@ RUN echo "opcache.enable = 1" >> /usr/local/etc/php/conf.d/opcache.ini \
 
 # Set working directory
 WORKDIR /var/www/html
+
+# Copy build scripts
+COPY build.sh config.json ./
+RUN chmod +x build.sh
+
+# Run build script to clone Moodle and plugins
+RUN ./build.sh
 
 # Set proper permissions
 RUN chown -R www-data:www-data /var/www/html

@@ -32,7 +32,6 @@ services:
     restart: unless-stopped
     user: root
     volumes:
-      - ./moodle_app:/var/www/html/moodle_app
       - ./config.php.docker:/var/www/html/config.php.docker:ro
       - moodledata:/var/www/moodledata
     networks:
@@ -64,9 +63,10 @@ services:
     ports:
       - "${NGINX_PORT:-8080}:80"
     volumes:
-      - ./moodle_app:/var/www/html/moodle_app:ro
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
       - moodledata:/var/www/moodledata
+    volumes_from:
+      - php:ro
     networks:
       - moodle_network
     depends_on:
