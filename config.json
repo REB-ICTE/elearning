@@ -10,6 +10,19 @@
       "version": "main",
       "destination": "theme/moove"
     }
+    {
+      "name": "coursefields",
+      "repository": "https://github.com/moodle-an-hochschulen/moodle-tool_coursefields.git",
+      "version": "main",
+      "destination": "admin/tool/coursefields"
+    },
+    {
+      "name": "moodle-auth_antihammer",
+      "repository": "https://github.com/sebsoftnl/moodle-auth_antihammer.git",
+      "version": "master",
+      "destination": "auth/antihammer"
+    }
+
   ],
   "destination_folder": "moodle_app"
 }

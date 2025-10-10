@@ -2,6 +2,7 @@ List of plugins included in production build:
 
         admin/tool/coursefields/
         auth/antihammer/
+
         auth/externalid/
         auth/oidc/
         blocks/accessibility/
