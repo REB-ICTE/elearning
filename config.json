@@ -7,7 +7,7 @@
     {
       "name": "theme_moove",
       "repository": "https://github.com/willianmano/moodle-theme_moove.git",
-      "version": "master",
+      "version": "main",
       "destination": "theme/moove"
     }
   ],
