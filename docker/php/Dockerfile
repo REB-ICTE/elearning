@@ -54,8 +54,8 @@ RUN echo "opcache.enable = 1" >> /usr/local/etc/php/conf.d/opcache.ini \
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy build scripts
-COPY build.sh config.json ./
+# Copy build scripts from project root
+COPY build.sh moodle-config.json ./
 RUN chmod +x build.sh
 
 # Run build script to clone Moodle and plugins

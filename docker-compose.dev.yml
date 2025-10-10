@@ -4,7 +4,7 @@ services:
     build:
       context: ./docker/mariadb
       dockerfile: Dockerfile
-    container_name: moodle_mariadb
+    container_name: moodle_mariadb_dev
     restart: unless-stopped
     environment:
       MARIADB_DATABASE: ${DB_NAME:-moodle}
@@ -12,10 +12,10 @@ services:
       MARIADB_PASSWORD: ${DB_PASSWORD:-moodlepass}
       MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpass}
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - mariadb_data_dev:/var/lib/mysql
       - ./docker/mariadb/initdb.d:/docker-entrypoint-initdb.d
     networks:
-      - moodle_network
+      - moodle_network_dev
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
@@ -23,19 +23,21 @@ services:
       timeout: 5s
       retries: 5
 
-  # PHP-FPM
+  # PHP-FPM (Development)
   php:
     build:
-      context: .
-      dockerfile: docker/php/Dockerfile
-    container_name: moodle_php
+      context: ./docker/php
+      dockerfile: Dockerfile.dev
+    container_name: moodle_php_dev
     restart: unless-stopped
     user: root
     volumes:
+      # Mount moodle_app directory for live development
+      - ./moodle_app:/var/www/html/moodle_app
       - ./config.php.docker:/var/www/html/config.php.docker:ro
-      - moodledata:/var/www/moodledata
+      - moodledata_dev:/var/www/moodledata
     networks:
-      - moodle_network
+      - moodle_network_dev
     depends_on:
       mariadb:
         condition: service_healthy
@@ -58,24 +60,23 @@ services:
   # Nginx Web Server
   nginx:
     image: nginx:alpine
-    container_name: moodle_nginx
+    container_name: moodle_nginx_dev
     restart: unless-stopped
     ports:
       - "${NGINX_PORT:-8080}:80"
     volumes:
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - moodledata:/var/www/moodledata
-    volumes_from:
-      - php:ro
+      - ./moodle_app:/var/www/html/moodle_app:ro
+      - moodledata_dev:/var/www/moodledata
     networks:
-      - moodle_network
+      - moodle_network_dev
     depends_on:
       - php
 
 networks:
-  moodle_network:
+  moodle_network_dev:
     driver: bridge
 
 volumes:
-  mariadb_data:
-  moodledata:
+  mariadb_data_dev:
+  moodledata_dev:
