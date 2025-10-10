@@ -11,16 +11,21 @@ This setup uses Docker Compose with MariaDB, PHP-FPM, and Nginx.
 
 ## Quick Start
 
-1. **Clone Moodle and plugins**:
-   ```bash
-   ./build.sh
-   ```
-
-2. **Configure environment** (optional):
+1. **Configure environment** (optional):
    ```bash
    cp .env.example .env
    # Edit .env to customize settings (database credentials, port, etc.)
    ```
+
+2. **Build Docker image**:
+   ```bash
+   docker compose build
+   ```
+
+   This will automatically:
+   - Clone Moodle core and plugins (via `build.sh`)
+   - Install system dependencies (git, jq, PHP extensions)
+   - Configure PHP and Nginx
 
 3. **Start Docker containers**:
    ```bash
@@ -48,7 +53,10 @@ This setup uses Docker Compose with MariaDB, PHP-FPM, and Nginx.
    - Username: `admin`
    - Password: `Admin123!` (or whatever you set in step 5)
 
-**Note**: Configuration, permissions, and setup are fully automated. Just run the commands above!
+**Note**: Moodle code is now baked into the Docker image. To update Moodle version or plugins:
+1. Edit `config.json`
+2. Rebuild the image: `docker compose build --no-cache php`
+3. Restart: `docker compose up -d`
 
 ## Useful Commands
 
