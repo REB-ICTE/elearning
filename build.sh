@@ -7,13 +7,13 @@
 # - jq: For parsing the JSON config file.
 #
 # USAGE:
-# 1. Customize the 'config.json' file with your desired Moodle version and plugins.
-# 2. Make this script executable: chmod +x setup_moodle.sh
-# 3. Run the script: ./setup_moodle.sh
+# 1. Customize the 'moodle-config.json' file with your desired Moodle version and plugins.
+# 2. Make this script executable: chmod +x build.sh
+# 3. Run the script: ./build.sh
 
 set -e # Exit immediately if a command exits with a non-zero status.
 
-CONFIG_FILE="config.json"
+CONFIG_FILE="moodle-config.json"
 
 # --- Helper Functions ---
 
