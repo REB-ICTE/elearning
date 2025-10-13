@@ -1,9 +1,7 @@
 List of plugins included in production build:
 
         admin/tool/coursefields/
-        auth/antihammer/
-
-        auth/externalid/
+        auth/antihammer/        
         auth/oidc/
         blocks/accessibility/
         blocks/completion_progress/
@@ -16,10 +14,7 @@ List of plugins included in production build:
         filter/siyavula/
         filter/wiris/
         lib/editor/atto/
-        local/bulkenrol/
-        local/careerguidance/
-        local/custom_service/
-        local/filemanager/
+        local/bulkenrol/                
         local/kopere_dashboard/
         local/mr/
         local/o365/
@@ -35,6 +30,13 @@ List of plugins included in production build:
         plagiarism/plagiarismsearch/
         plagiarism/urkund/
         question/type/siyavulaqt/
-        report/benchmark/
-        repository/erepository/
+        report/benchmark/        
         theme/moove/
+
+## to be done
+
+        auth/externalid/
+        repository/erepository/
+        local/filemanager/
+        local/careerguidance/
+        local/custom_service/
