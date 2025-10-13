@@ -148,6 +148,12 @@
       "repository": "https://github.com/mikasmart/moodle-report_benchmark.git",
       "version": "master",
       "destination": "report/benchmark"
+    },
+    {
+      "name": "local_reblibrary",
+      "repository": "https://github.com/REB-ICTE/local_reblibrary.git",
+      "version": "main",
+      "destination": "local/reblibrary"
     }
 
   ],
