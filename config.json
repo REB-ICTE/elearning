@@ -22,12 +22,7 @@
       "version": "master",
       "destination": "auth/antihammer"
     },
-    {
-      "name": "auth_externalid",
-      "repository": "https://github.com/moodle/moodle ",
-      "version": "origin",
-      "destination": "auth/externalid"
-    },
+    
     {
       "name": "moodle-auth_oidc",
       "repository": "https://github.com/microsoft/moodle-auth_oidc.git",
@@ -36,7 +31,7 @@
     },
     {
       "name": "moodle-block_accessibility",
-      "repository": "https://github.com/moodle/moodle-block_accessibility.git",
+      "repository": "https://github.com/brickfield/moodle-block_accessibility.git",
       "version": "main",
       "destination": "blocks/accessibility"
     },
