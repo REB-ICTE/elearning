@@ -6,6 +6,8 @@ services:
       dockerfile: Dockerfile
     container_name: moodle_mariadb_dev
     restart: unless-stopped
+    ports:
+      - "3306:3306"
     environment:
       MARIADB_DATABASE: ${DB_NAME:-moodle}
       MARIADB_USER: ${DB_USER:-moodleuser}

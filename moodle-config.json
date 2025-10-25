@@ -42,12 +42,6 @@
       "destination": "blocks/completion_progress"
     },
     {
-      "name": "exalib",
-      "repository": "https://github.com/gtn/exalib.git",
-      "version": "experimental",
-      "destination": "blocks/exalib"
-    },
-    {
       "name": "Moodle-block_progress",
       "repository": "https://github.com/deraadt/Moodle-block_progress.git",
       "version": "master",
@@ -136,12 +130,6 @@
       "repository": "https://github.com/academic-moodle-cooperation/moodle-mod_organizer.git",
       "version": "main",
       "destination": "mod/organizer"
-    },
-    {
-      "name": "moodle-plagiarism_urkund",
-      "repository": "https://github.com/turnitin/moodle-plagiarism_urkund.git",
-      "version": "MOODLE_400_STABLE",
-      "destination": "plagiarism/urkund"
     },
     {
       "name": "report_moodle-report_benchmark",
