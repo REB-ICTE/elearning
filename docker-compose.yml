@@ -47,7 +47,10 @@ services:
       DB_PASSWORD: ${DB_PASSWORD:-moodlepass}
       DB_PORT: ${DB_PORT:-3306}
       DB_PREFIX: ${DB_PREFIX:-mdl_}
-      MOODLE_WWWROOT: ${MOODLE_WWWROOT:-http://localhost:8080}
+      MOODLE_PROTOCOL: ${MOODLE_PROTOCOL:-http}
+      MOODLE_HOST: ${MOODLE_HOST:-localhost}
+      MOODLE_PORT: ${MOODLE_PORT:-8080}
+      MOODLE_WWWROOT: ${MOODLE_WWWROOT:-}
       MOODLE_DATAROOT: /var/www/moodledata
       MOODLE_DEBUG: ${MOODLE_DEBUG:-false}
       MOODLE_MAIL_NOREPLY: ${MOODLE_MAIL_NOREPLY:-}
@@ -68,10 +71,10 @@ services:
     container_name: moodle_nginx
     restart: unless-stopped
     ports:
-      - "${NGINX_PORT:-8080}:${NGINX_PORT:-8080}"
+      - "${MOODLE_PORT:-8080}:${MOODLE_PORT:-8080}"
     environment:
       PHP_FPM_HOST: ${PHP_FPM_HOST:-php}
-      NGINX_PORT: ${NGINX_PORT:-8080}
+      NGINX_PORT: ${MOODLE_PORT:-8080}
     volumes:
       - moodledata:/var/www/moodledata
     volumes_from:

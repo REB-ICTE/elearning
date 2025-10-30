@@ -333,12 +333,16 @@ DB_PASSWORD=moodlepass
 DB_ROOT_PASSWORD=rootpass
 DB_PREFIX=mdl_
 
-# Moodle
-MOODLE_WWWROOT=http://localhost:8080
-MOODLE_DEBUG=false
+# Moodle Site URL
+# Components (automatically combined to create MOODLE_WWWROOT)
+MOODLE_PROTOCOL=http
+MOODLE_HOST=localhost
+MOODLE_PORT=8080
+# Alternatively, set MOODLE_WWWROOT directly:
+# MOODLE_WWWROOT=http://localhost:8080
 
-# Nginx
-NGINX_PORT=8080
+# Moodle Settings
+MOODLE_DEBUG=false
 
 # MinIO S3 Storage
 MINIO_ROOT_USER=minioadmin
@@ -353,6 +357,8 @@ S3_SECRET_KEY=minioadmin
 S3_BUCKET=moodle
 S3_REGION=us-east-1
 ```
+
+**Note:** The `MOODLE_WWWROOT` is automatically constructed from `MOODLE_PROTOCOL`, `MOODLE_HOST`, and `MOODLE_PORT` in the PHP entrypoint script. For standard ports (80 for HTTP, 443 for HTTPS), the port is omitted from the URL.
 
 ## Docker Services
 
