@@ -1,0 +1,55 @@
+# Moodle app directory (cloned during build)
+moodle_app
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Database dumps and migrations
+*.sql
+*.sql.gz
+migration.load.tmp
+dev_migration.sql
+
+# Docker files not needed in build
+docker-compose*.yml
+Dockerfile
+.dockerignore
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# CI/CD
+.github
+
+# IDE and editor files
+.idea
+.vscode
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Documentation (not needed in container)
+*.md
+!README.md
+
+# Build artifacts
+*.log
+*.tmp
+*.cache
+
+# Node modules (if any)
+node_modules
+npm-debug.log
+
+# Testing
+tests
+test
+
+# Backup files
+*.bak
+*.backup

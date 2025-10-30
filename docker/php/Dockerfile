@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 FROM php:8.2-fpm
 
 # Install system dependencies
@@ -5,6 +6,7 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     jq \
+    openssh-client \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
@@ -58,8 +60,13 @@ WORKDIR /var/www/html
 COPY build.sh moodle-config.json ./
 RUN chmod +x build.sh
 
+# Configure SSH for GitHub (for private repositories)
+RUN mkdir -p -m 0700 ~/.ssh && \
+    ssh-keyscan github.com >> ~/.ssh/known_hosts
+
 # Run build script to clone Moodle and plugins
-RUN ./build.sh
+# Mount SSH socket to enable cloning private repositories
+RUN --mount=type=ssh ./build.sh
 
 # Set proper permissions
 RUN chown -R www-data:www-data /var/www/html

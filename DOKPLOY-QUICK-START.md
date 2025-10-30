@@ -3,10 +3,29 @@
 ## TL;DR - What You Need to Do
 
 1. **Connect your GitHub repo to Dokploy**
-2. **Create 4 services** in Dokploy (see table below)
-3. **Configure environment variables** from `.env.staging`
-4. **Set up volumes** (3 named volumes)
-5. **Deploy services** in order: MariaDB → MinIO → PHP → Nginx
+2. **Configure SSH key** for private repository access (see below)
+3. **Create 4 services** in Dokploy (see table below)
+4. **Configure environment variables** from `.env.staging`
+5. **Set up volumes** (3 named volumes)
+6. **Deploy services** in order: MariaDB → MinIO → PHP → Nginx
+
+## IMPORTANT: SSH Key Setup
+
+This project includes a **private plugin** (`local_reblibrary`) that requires SSH authentication during build.
+
+**Before deploying**, you MUST:
+1. Generate a deploy key: `ssh-keygen -t ed25519 -C "dokploy-deploy" -f ~/.ssh/dokploy_deploy`
+2. Add the public key (`~/.ssh/dokploy_deploy.pub`) to GitHub:
+   - Go to https://github.com/REB-ICTE/local_reblibrary/settings/keys
+   - Add deploy key with read access
+3. Add the private key to Dokploy:
+   - In your Dokploy project settings
+   - Look for "SSH Keys" or "Build Secrets"
+   - Paste the contents of `~/.ssh/dokploy_deploy`
+
+**Without SSH configured, the PHP service build will fail!**
+
+See `DOKPLOY.md` (SSH Configuration section) for detailed instructions.
 
 ## Service Configuration Table
 
@@ -162,7 +181,13 @@ docker exec moodle-php php /var/www/html/moodle_app/admin/cli/reset_password.php
 
 ## Troubleshooting
 
-**Build fails:**
+**Build fails with "fatal: could not read Username" or "Permission denied":**
+- SSH key not configured in Dokploy
+- Deploy key not added to GitHub repository
+- Verify private key is correctly pasted in Dokploy
+- See DOKPLOY.md "SSH Authentication Errors" section
+
+**Build fails (other reasons):**
 - Check build logs in Dokploy
 - Verify all files are committed to `dev` branch
 - Ensure build timeout is at least 10 minutes

@@ -21,6 +21,55 @@ The application is deployed as 4 independent services:
 1. Dokploy account with GitHub integration enabled
 2. GitHub repository connected to Dokploy
 3. Domain/subdomain configured for staging (e.g., `staging.yourdomain.com`)
+4. SSH private key with access to private repositories (if using private plugins)
+
+## SSH Configuration for Private Repositories
+
+This project includes a private plugin (`local_reblibrary`) that requires SSH authentication during Docker build. You need to configure SSH keys in Dokploy.
+
+### Option 1: Using GitHub Deploy Key (Recommended)
+
+1. **Generate a deploy key** (on your local machine):
+   ```bash
+   ssh-keygen -t ed25519 -C "dokploy-moodle-deploy" -f ~/.ssh/dokploy_moodle_deploy
+   ```
+
+2. **Add the public key to GitHub**:
+   - Go to your private repository: https://github.com/REB-ICTE/local_reblibrary
+   - Navigate to Settings → Deploy keys
+   - Click "Add deploy key"
+   - Paste the contents of `~/.ssh/dokploy_moodle_deploy.pub`
+   - Name it "Dokploy Deploy Key"
+   - Check "Allow read access" (write access not needed)
+   - Click "Add key"
+
+3. **Add the private key to Dokploy**:
+   - In Dokploy dashboard, go to your project
+   - Navigate to Settings or Build Configuration
+   - Look for "SSH Keys" or "Build Secrets" section
+   - Add the private key contents from `~/.ssh/dokploy_moodle_deploy`
+   - Dokploy will mount this key during Docker builds using BuildKit secrets
+
+### Option 2: Using Your Personal SSH Key
+
+If you prefer to use your existing SSH key:
+
+1. **Copy your private SSH key** (usually `~/.ssh/id_ed25519` or `~/.ssh/id_rsa`)
+2. **Add it to Dokploy** (same steps as above)
+
+**Security Note:** Using a deploy key is more secure as it's limited to specific repositories and has read-only access.
+
+### Verify SSH Configuration
+
+After configuring, Dokploy will automatically:
+- Mount your SSH key during build using `--mount=type=ssh`
+- Add GitHub to known_hosts
+- Clone private repositories using SSH URLs (e.g., `git@github.com:REB-ICTE/local_reblibrary.git`)
+
+If the build fails with SSH errors, check:
+1. The SSH key has access to the private repository
+2. The key is properly configured in Dokploy
+3. GitHub's SSH host key is trusted (done automatically by Dockerfile)
 
 ## Initial Setup
 
@@ -109,6 +158,11 @@ S3_REGION=us-east-1
 - Depends on: `moodle-mariadb` (must be healthy before starting)
 
 **Build Time:** ~5-10 minutes (clones Moodle core + plugins)
+
+**SSH Requirements:**
+- This service clones a private plugin (`local_reblibrary`) during build
+- Requires SSH key configured in Dokploy (see "SSH Configuration for Private Repositories" section above)
+- Uses Docker BuildKit with `--mount=type=ssh` to securely access private repositories
 
 ---
 
@@ -373,6 +427,33 @@ docker exec -it moodle-mariadb mariadb -u moodleuser -p moodle
 1. **PHP build timeout**: Increase build timeout in Dokploy settings (build.sh takes ~5 min)
 2. **Git clone failures**: Check GitHub access, ensure repository is public or SSH keys configured
 3. **Out of memory**: Increase container memory limits in Dokploy
+
+### SSH Authentication Errors
+
+If you see errors like "fatal: could not read Username" or "Permission denied (publickey)":
+
+1. **Verify SSH key is configured in Dokploy**:
+   - Check Dokploy project settings for SSH keys section
+   - Ensure the private key is properly added
+
+2. **Verify deploy key has access**:
+   - Go to https://github.com/REB-ICTE/local_reblibrary/settings/keys
+   - Ensure your deploy key is listed and enabled
+
+3. **Check SSH URL format**:
+   - Private repos must use SSH format: `git@github.com:REB-ICTE/local_reblibrary.git`
+   - Not HTTPS format: `https://github.com/REB-ICTE/local_reblibrary.git`
+   - Verify in `moodle-config.json`
+
+4. **Test SSH access locally**:
+   ```bash
+   ssh -T git@github.com
+   # Should respond: "Hi username! You've successfully authenticated..."
+   ```
+
+5. **BuildKit not enabled**:
+   - Ensure Dokploy has BuildKit enabled (should be default)
+   - Check build logs for `# syntax=docker/dockerfile:1` at the top
 
 ## Security Considerations
 
