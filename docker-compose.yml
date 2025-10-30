@@ -86,7 +86,7 @@ services:
 
   # MinIO S3 Storage
   minio:
-    image: minio/minio:latest
+    image: minio/minio:RELEASE.2025-04-22T22-12-26Z
     container_name: moodle_minio
     restart: unless-stopped
     ports:
