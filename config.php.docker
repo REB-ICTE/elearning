@@ -63,6 +63,29 @@ if (getenv('MOODLE_REVERSEPROXY') === 'true') {
     }
 }
 
+// S3 Storage Configuration (MinIO)
+// To use S3 for file storage, you need to install the S3 filesystem plugin
+// and configure it through Moodle's admin interface or programmatically below
+if (getenv('S3_ENDPOINT') && getenv('S3_ACCESS_KEY') && getenv('S3_SECRET_KEY')) {
+    // Alternative file system for file storage
+    // This requires tool_objectfs or similar S3 plugin to be installed
+    // Uncomment and configure once plugin is installed:
+    /*
+    $CFG->alternative_file_system_class = '\\tool_objectfs\\s3_file_system';
+    $CFG->tool_objectfs = [
+        'enabletasks' => true,
+        'enablelogging' => true,
+        'filesystem' => '\\tool_objectfs\\s3_file_system',
+        's3_key' => getenv('S3_ACCESS_KEY'),
+        's3_secret' => getenv('S3_SECRET_KEY'),
+        's3_bucket' => getenv('S3_BUCKET') ?: 'moodle',
+        's3_region' => getenv('S3_REGION') ?: 'us-east-1',
+        's3_endpoint' => getenv('S3_ENDPOINT'),
+        's3_use_path_style_url' => true, // Required for MinIO
+    ];
+    */
+}
+
 require_once(__DIR__ . '/lib/setup.php');
 
 // There is no php closing tag in this file,

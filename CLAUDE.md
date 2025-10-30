@@ -13,7 +13,9 @@ Moodle 5.1 (Build: 20251006) e-learning platform running on Docker with MariaDB 
 ✅ **Running and functional**
 - Moodle 5.1 installed and upgraded from production 5.0.2
 - MariaDB 11.4 database loaded with production data
+- MinIO S3-compatible object storage available
 - Available at: http://localhost:8080
+- MinIO Console: http://localhost:9001
 - Admin login: `admin` / `Admin123!`
 
 ## Setup
@@ -35,6 +37,14 @@ docker compose exec php composer install -d /var/www/html/moodle_app
 - Database: moodle
 - User: moodleuser
 - Password: moodlepass
+
+**MinIO S3 Storage Configuration:**
+- Endpoint: http://minio:9000 (internal), http://localhost:9000 (external)
+- Console: http://localhost:9001
+- Access Key: minioadmin
+- Secret Key: minioadmin
+- Default Bucket: moodle
+- Region: us-east-1
 
 See `DOCKER.md` for detailed Docker instructions.
 
@@ -92,6 +102,10 @@ vendor/bin/behat --tags @mod_forum       # Run tagged tests
 # Database access
 docker compose exec mariadb mariadb -u moodleuser -p moodle
 
+# MinIO access (via mc CLI)
+docker compose exec minio mc alias set myminio http://localhost:9000 minioadmin minioadmin
+docker compose exec minio mc ls myminio/moodle
+
 # Build JavaScript/CSS
 docker compose exec php npx grunt -C /var/www/html/moodle_app
 
@@ -120,6 +134,7 @@ docker compose exec php bash
 - `moodle_app/lib/` - Core libraries (outside web root for security)
 - `moodle_app/mod/` - Activity modules (outside web root)
 - `docker/mariadb/` - MariaDB configuration and initialization scripts
+- `docker/minio/` - MinIO S3 storage initialization scripts
 - `docker/nginx/` - Nginx configuration
 - `docker/php/` - PHP-FPM entrypoint script
 
@@ -230,6 +245,49 @@ To switch between MariaDB and PostgreSQL (if needed):
    docker compose up -d
    ```
 
+### MinIO S3 Storage Operations
+
+Access MinIO Console at http://localhost:9001 (login: minioadmin/minioadmin)
+
+**Using MinIO Client (mc) CLI:**
+```bash
+# List buckets
+docker compose exec minio mc ls myminio
+
+# List files in moodle bucket
+docker compose exec minio mc ls myminio/moodle
+
+# Upload file
+docker compose exec minio mc cp /path/to/file myminio/moodle/
+
+# Download file
+docker compose exec minio mc cp myminio/moodle/file.txt /path/to/destination/
+
+# Remove file
+docker compose exec minio mc rm myminio/moodle/file.txt
+
+# Get bucket info
+docker compose exec minio mc stat myminio/moodle
+```
+
+**Integrating S3 with Moodle:**
+
+To use MinIO for Moodle file storage, you need to install an S3 filesystem plugin:
+
+1. Install Object File System plugin (tool_objectfs):
+   ```bash
+   cd moodle_app/admin/tool
+   git clone https://github.com/catalyst/moodle-tool_objectfs.git objectfs
+   ```
+
+2. Visit Site Administration > Notifications to install the plugin
+
+3. Configure in `config.php.docker` (uncomment the S3 configuration section)
+
+4. Or configure via web interface: Site Administration > Plugins > Admin tools > Object storage file system
+
+**Note:** The S3 configuration in `config.php.docker` is commented out by default. Uncomment and configure after installing the required plugin.
+
 ## Known Issues & Fixes
 
 ### Missing Plugins from Production
@@ -281,6 +339,19 @@ MOODLE_DEBUG=false
 
 # Nginx
 NGINX_PORT=8080
+
+# MinIO S3 Storage
+MINIO_ROOT_USER=minioadmin
+MINIO_ROOT_PASSWORD=minioadmin
+MINIO_PORT=9000
+MINIO_CONSOLE_PORT=9001
+MINIO_REGION=us-east-1
+MINIO_BUCKET=moodle
+S3_ENDPOINT=http://minio:9000
+S3_ACCESS_KEY=minioadmin
+S3_SECRET_KEY=minioadmin
+S3_BUCKET=moodle
+S3_REGION=us-east-1
 ```
 
 ## Docker Services
@@ -288,5 +359,6 @@ NGINX_PORT=8080
 - **mariadb**: MariaDB 11.4 database server
 - **php**: PHP 8.2-FPM with Moodle extensions
 - **nginx**: Nginx web server (Alpine Linux)
+- **minio**: MinIO S3-compatible object storage server
 
 All services are connected via `moodle_network` bridge network.
