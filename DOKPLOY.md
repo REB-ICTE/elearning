@@ -178,15 +178,19 @@ S3_REGION=us-east-1
 **Environment Variables:**
 ```bash
 PHP_FPM_HOST=moodle-php
+NGINX_PORT=8080
 ```
 
-**Note:** The `PHP_FPM_HOST` variable tells Nginx which service name to use for PHP-FPM connection. This must match your PHP service name (default: `moodle-php`).
+**Notes:**
+- `PHP_FPM_HOST`: PHP-FPM service hostname (must match your PHP service name)
+- `NGINX_PORT`: Port nginx listens on inside the container (default: 8080)
 
 **Volumes:**
 - `/var/www/moodledata` → Named volume: `moodledata` (shared with PHP, read-only)
 
 **Port Mapping:**
-- `80:80` (or configure Dokploy's built-in reverse proxy)
+- `8080:8080` (or configure Dokploy's built-in reverse proxy)
+- Can be customized via `NGINX_PORT` environment variable
 
 **Dependencies:**
 - Depends on: `moodle-php`

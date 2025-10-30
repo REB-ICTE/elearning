@@ -11,15 +11,16 @@ RUN chmod +x /docker-entrypoint.sh
 # Create directory for logs
 RUN mkdir -p /var/log/nginx
 
-# Expose HTTP port
-EXPOSE 80
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
-    CMD wget --quiet --tries=1 --spider http://localhost/ || exit 1
-
-# Set default PHP-FPM host (can be overridden)
+# Set default environment variables (can be overridden)
 ENV PHP_FPM_HOST=php
+ENV NGINX_PORT=8080
+
+# Expose HTTP port (documentation only - actual port is set via NGINX_PORT env var)
+EXPOSE ${NGINX_PORT}
+
+# Health check using the NGINX_PORT environment variable
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
+    CMD sh -c 'wget --quiet --tries=1 --spider http://localhost:${NGINX_PORT}/ || exit 1'
 
 # Use custom entrypoint to substitute env vars
 ENTRYPOINT ["/docker-entrypoint.sh"]

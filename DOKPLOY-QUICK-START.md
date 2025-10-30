@@ -70,8 +70,11 @@ S3_REGION=us-east-1
 ### Service 3: moodle-nginx
 ```bash
 PHP_FPM_HOST=moodle-php
+NGINX_PORT=8080
 ```
-**Important:** This must match your PHP service name!
+**Important:**
+- `PHP_FPM_HOST` must match your PHP service name!
+- `NGINX_PORT` sets the port nginx listens on (default: 8080)
 
 ### Service 4: moodle-minio
 ```bash
