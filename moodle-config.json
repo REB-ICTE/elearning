@@ -139,7 +139,7 @@
     },
     {
       "name": "local_reblibrary",
-      "repository": "git@github.com:REB-ICTE/local_reblibrary.git",
+      "repository": "https://github.com/REB-ICTE/local_reblibrary.git",
       "version": "main",
       "destination": "local/reblibrary"
     }
