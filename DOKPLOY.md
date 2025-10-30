@@ -176,7 +176,11 @@ S3_REGION=us-east-1
 - **Dockerfile Path:** `Dockerfile`
 
 **Environment Variables:**
-None required (configuration is baked into Dockerfile)
+```bash
+PHP_FPM_HOST=moodle-php
+```
+
+**Note:** The `PHP_FPM_HOST` variable tells Nginx which service name to use for PHP-FPM connection. This must match your PHP service name (default: `moodle-php`).
 
 **Volumes:**
 - `/var/www/moodledata` → Named volume: `moodledata` (shared with PHP, read-only)
@@ -410,11 +414,25 @@ docker exec -it moodle-mariadb mariadb -u moodleuser -p moodle
 3. Verify credentials match between PHP and MariaDB services
 4. Test connection: `docker exec moodle-php php -r "echo new mysqli('moodle-mariadb', 'moodleuser', 'password', 'moodle')->connect_error;"`
 
-### Nginx 502 Bad Gateway
+### Nginx 502 Bad Gateway or "host not found in upstream"
 
-1. Check PHP-FPM is running: `docker ps | grep moodle-php`
-2. Verify FastCGI connection: PHP service name must be `php` or update nginx config
-3. Check PHP-FPM logs: `docker logs moodle-php`
+If you see errors like `host not found in upstream "php"`:
+
+1. **Set PHP_FPM_HOST environment variable** in Nginx service:
+   - Go to Nginx service settings in Dokploy
+   - Add environment variable: `PHP_FPM_HOST=moodle-php`
+   - The value must match your PHP service name exactly
+
+2. **Check PHP-FPM is running**: `docker ps | grep moodle-php`
+
+3. **Verify service names match**:
+   - PHP service name in Dokploy: `moodle-php`
+   - PHP_FPM_HOST in Nginx: `moodle-php`
+   - These must be identical
+
+4. **Check PHP-FPM logs**: `docker logs moodle-php`
+
+5. **Restart Nginx service** after adding the environment variable
 
 ### File Permission Issues
 
