@@ -68,7 +68,10 @@ S3_REGION=us-east-1
 ```
 
 ### Service 3: moodle-nginx
-No environment variables needed.
+```bash
+PHP_FPM_HOST=moodle-php
+```
+**Important:** This must match your PHP service name!
 
 ### Service 4: moodle-minio
 ```bash
@@ -202,10 +205,11 @@ docker exec moodle-php php /var/www/html/moodle_app/admin/cli/reset_password.php
 - Check DB_HOST matches MariaDB service name
 - Verify credentials match
 
-**502 Bad Gateway:**
+**502 Bad Gateway or "host not found in upstream":**
+- **Set `PHP_FPM_HOST=moodle-php` in Nginx service environment variables**
+- Verify PHP service name matches exactly
 - Check PHP-FPM is running
-- Verify Nginx can reach PHP service
-- Check FastCGI configuration
+- Restart Nginx after adding the environment variable
 
 ## Need More Details?
 
