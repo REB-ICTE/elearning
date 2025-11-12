@@ -33,7 +33,7 @@ services:
     user: root
     volumes:
       - ./config.php.docker:/var/www/html/config.php.docker:ro
-      - moodledata:/var/www/moodledata
+      - ./moodledata:/var/www/moodledata
     networks:
       - moodle_network
     depends_on:
@@ -76,7 +76,7 @@ services:
       PHP_FPM_HOST: ${PHP_FPM_HOST:-php}
       NGINX_PORT: ${MOODLE_PORT:-8080}
     volumes:
-      - moodledata:/var/www/moodledata
+      - ./moodledata:/var/www/moodledata
     volumes_from:
       - php:ro
     networks:
