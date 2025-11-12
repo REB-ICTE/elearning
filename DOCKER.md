@@ -119,15 +119,17 @@ The `config.php.docker` file uses environment variables from `.env` file. Edit `
 - `DB_PREFIX`: Database table prefix (default: mdl_)
 
 **Moodle**:
-- `MOODLE_WWWROOT`: Moodle site URL (default: http://localhost:8080)
+- `MOODLE_PROTOCOL`: Protocol (http or https, default: http)
+- `MOODLE_HOST`: Hostname (default: localhost)
+- `MOODLE_PORT`: Port number (default: 8080)
+- `MOODLE_WWWROOT`: (Optional) Full site URL - automatically constructed from above if not set
 - `MOODLE_DEBUG`: Enable debugging mode (true/false, default: false)
 - `MOODLE_MAIL_NOREPLY`: No-reply email address
 - `MOODLE_MAIL_PREFIX`: Email subject prefix
 - `MOODLE_REVERSEPROXY`: Enable if behind reverse proxy (true/false)
 - `MOODLE_SSLPROXY`: Enable if reverse proxy handles SSL (true/false)
 
-**Nginx**:
-- `NGINX_PORT`: Host port for Nginx (default: 8080)
+**Note**: `MOODLE_WWWROOT` is automatically constructed from `MOODLE_PROTOCOL`, `MOODLE_HOST`, and `MOODLE_PORT`. For standard ports (80/443), the port is omitted from the URL. The `MOODLE_PORT` also determines the host port for Nginx.
 
 ## Switching Databases
 

@@ -8,7 +8,7 @@ map $http_host $port_in_host {
 resolver 127.0.0.11 valid=30s ipv6=off;
 
 server {
-    listen 80;
+    listen ${NGINX_PORT};
     server_name localhost;
     root /var/www/html/moodle_app/public;
     index index.php index.html index.htm;
@@ -34,7 +34,7 @@ server {
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
 
         # Use variable to force runtime DNS resolution (prevents startup failure)
-        set $php_upstream php:9000;
+        set $php_upstream ${PHP_FPM_HOST}:9000;
         fastcgi_pass $php_upstream;
 
         fastcgi_index index.php;
