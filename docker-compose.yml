@@ -19,8 +19,9 @@ services:
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
-      interval: 10s
-      timeout: 5s
+      start_period: 3600s
+      interval: 60s
+      timeout: 30s
       retries: 5
 
   # PHP-FPM
