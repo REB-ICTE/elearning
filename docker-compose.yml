@@ -33,6 +33,8 @@ services:
     restart: unless-stopped
     user: root
     volumes:
+      # Use host mount if moodle_app exists, otherwise use named volume
+      - ${MOODLE_APP_SOURCE:-./moodle_app}:/var/www/html/moodle_app
       - ./config.php.docker:/var/www/html/config.php.docker:ro
       - ./moodledata:/var/www/moodledata
     networks:
@@ -77,9 +79,8 @@ services:
       PHP_FPM_HOST: ${PHP_FPM_HOST:-php}
       NGINX_PORT: ${MOODLE_PORT:-8080}
     volumes:
+      - ${MOODLE_APP_SOURCE:-./moodle_app}:/var/www/html/moodle_app:ro
       - ./moodledata:/var/www/moodledata
-    volumes_from:
-      - php:ro
     networks:
       - moodle_network
     depends_on:
@@ -115,5 +116,4 @@ networks:
 
 volumes:
   mariadb_data:
-  moodledata:
   minio_data:

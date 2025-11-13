@@ -68,7 +68,17 @@ RUN mkdir -p -m 0700 ~/.ssh && \
 # Mount SSH socket to enable cloning private repositories
 RUN --mount=type=ssh ./build.sh
 
-# Set proper permissions
+# Move moodle_app to staging location for volume initialization
+# This allows the entrypoint to copy files to a named volume on first run
+RUN if [ -d "/var/www/html/moodle_app" ]; then \
+        mv /var/www/html/moodle_app /opt/moodle_app && \
+        mkdir -p /var/www/html/moodle_app; \
+    fi
+
+# Set proper permissions for staging location
+RUN if [ -d "/opt/moodle_app" ]; then \
+        chown -R www-data:www-data /opt/moodle_app; \
+    fi
 RUN chown -R www-data:www-data /var/www/html
 
 # Copy entrypoint script
