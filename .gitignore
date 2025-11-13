@@ -1,4 +1,5 @@
 moodle_app
+moodledata
 dev_migration.sql
 docker/postgres/initdb.d/*.sql
 migration.load.tmp
