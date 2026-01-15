@@ -78,12 +78,6 @@
       "destination": "local/bulkenrol"
     },
     {
-      "name": "moodle-local-kopere_dashboard",
-      "repository": "https://github.com/EduardoKrausME/moodle-local-kopere_dashboard.git",
-      "version": "master",
-      "destination": "local/kopere_dashboard"
-    },
-    {
       "name": "moodle-local_mr",
       "repository": "https://github.com/open-lms-open-source/moodle-local_mr.git",
       "version": "master",
@@ -136,12 +130,6 @@
       "repository": "https://github.com/mikasmart/moodle-report_benchmark.git",
       "version": "master",
       "destination": "report/benchmark"
-    },
-    {
-      "name": "local_reblibrary",
-      "repository": "https://github.com/REB-ICTE/local_reblibrary.git",
-      "version": "dev",
-      "destination": "local/reblibrary"
     }
 
   ],

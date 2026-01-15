@@ -11,3 +11,8 @@ migration.load.tmp
 # IDE
 .idea
 .vscode
+
+# SSL Certificates (keep .gitkeep and README.md)
+docker/nginx/certs/*.crt
+docker/nginx/certs/*.key
+docker/nginx/certs/*.pem

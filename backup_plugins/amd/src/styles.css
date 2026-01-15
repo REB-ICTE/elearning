@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@theme {
+  /* REB Brand Colors */
+  --color-reb-blue-25: #f5f9fd;
+  --color-reb-blue-50: #e6f0f9;
+  --color-reb-blue-100: #cce0f3;
+  --color-reb-blue-200: #99c2e7;
+  --color-reb-blue-300: #66a3db;
+  --color-reb-blue-400: #3385cf;
+  --color-reb-blue-500: #005198;
+  --color-reb-blue-600: #00417a;
+  --color-reb-blue-700: #00315b;
+  --color-reb-blue-800: #00203d;
+  --color-reb-blue-900: #00101e;
+  --color-reb-blue: #005198;
+}
+
+/* Remove Moodle's default container constraints for full-width layout */
+body.local-rebdashboard-plugin .main-inner {
+  max-width: 100% !important;
+  margin-top: 0 !important;
+  padding: 0 !important;
+}
+
+/* Hide page header content for cleaner layout */
+body.local-rebdashboard-plugin #page-header * {
+  display: none !important;
+}
+
+body.local-rebdashboard-plugin #page-header {
+  margin: 0;
+  padding: 0 !important;
+  margin-top: 10px;
+}
