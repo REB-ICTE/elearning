@@ -40,3 +40,6 @@ List of plugins included in production build:
         local/filemanager/
         local/careerguidance/
         local/custom_service/
+        local/ultimate/
+        local/ultimate_market/
+        block/ultimate/

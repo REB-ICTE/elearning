@@ -142,6 +142,24 @@
       "repository": "https://github.com/REB-ICTE/local_reblibrary.git",
       "version": "dev",
       "destination": "local/reblibrary"
+    },
+    {
+      "name": "local_ultimate",
+      "repository": "https://github.com/willianmano/moodle-local_ultimate.git",
+      "version": "main",
+      "destination": "local/ultimate"
+    },
+    {
+      "name": "local_ultimate_market",
+      "repository": "https://github.com/willianmano/moodle-local_ultimate_market.git",
+      "version": "main",
+      "destination": "local/ultimate_market"
+    },
+    {
+      "name": "block_ultimate",
+      "repository": "https://github.com/willianmano/moodle-block_ultimate.git",
+      "version": "main",
+      "destination": "block/ultimate"
     }
 
   ],
